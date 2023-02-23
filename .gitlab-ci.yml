@@ -1,8 +1,17 @@
-image: maven:3.9.0-eclipse-temurin-17
-
 compile:
+  image: maven:3.9.0-eclipse-temurin-17
   stage: build
   tags:
     - docker
   script:
     - mvn compile
+
+analyze:
+  image: registry.gitlab.in.htwg-konstanz.de/bachelorarbeit-rb/codeql-docker:latest
+  stage: test
+  tags:
+    - docker
+  script:
+    - mkdir data
+    - codeql database create --language=java data/java-database
+    - codeql database analyze data/java-database --format=csv --output=test.csv codeql/java-queries
