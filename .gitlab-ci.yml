@@ -14,4 +14,5 @@ analyze:
   script:
     - mkdir data
     - codeql database create --language=java data/java-database
-    - codeql database analyze data/java-database --format=csv --output=test.csv codeql/java-queries
+    - codeql database analyze data/java-database --format=sarif-latest --output=result.sarif codeql/java-queries
+    - codeql github upload-results --repository=ro99bre/CodeQL-Test_CWA-Server --sarif=result.sarif --ref=refs/heads/$CI_COMMIT_REF_NAME --commit=$CI_COMMIT_SHA --github-url=https://github.com
